@@ -1,0 +1,24 @@
+import React from 'react'
+import {Stack} from '@mui/material'
+const ChatList = ({
+    w = "100%",
+    chats = [],
+    chatId, 
+    onlineUsers = [],
+    newMessagesAlert = [{
+        chatId: "",
+        count:0,
+    }]
+}) => {
+  return (    
+    <Stack width={w} direction={"column"}>
+        {
+            chats?.map((data) => {
+                return <div> {data}</div>
+            })
+        }
+    </Stack>
+  )
+}
+
+export default ChatList

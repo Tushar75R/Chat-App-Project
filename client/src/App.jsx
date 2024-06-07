@@ -1,6 +1,7 @@
-import React,{lazy} from "react"
+import React,{Suspense, lazy} from "react"
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import ProtechRouter from "./Components/Auth/ProtechRouter";
+import { LayoutLoader } from "./Components/Layout/Loaders";
 
 const Home = lazy(() => import('./Pages/Home'));
 const Login = lazy(() => import("./Pages/Login"));
@@ -12,22 +13,24 @@ function App() {
  let user =true;
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<ProtechRouter user={user} />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/chat/:chatId" element={<Chat />} />
-          <Route path="/groups" element={<Groups />} />
-        </Route>
-        <Route
-          path="/login"
-          element={
-            <ProtechRouter user={!user} redirect="/">
-              <Login />
-            </ProtechRouter>
-          }
-        />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Suspense fallback={<LayoutLoader />}>
+        <Routes>
+          <Route element={<ProtechRouter user={user} />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/chat/:chatId" element={<Chat />} />
+            <Route path="/groups" element={<Groups />} />
+          </Route>
+          <Route
+            path="/login"
+            element={
+              <ProtechRouter user={!user} redirect="/">
+                <Login />
+              </ProtechRouter>
+            }
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }
