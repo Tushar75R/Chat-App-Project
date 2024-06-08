@@ -1,9 +1,48 @@
-import React from 'react'
+import { Dialog, DialogTitle, InputAdornment, List, Stack, TextField } from '@mui/material'
+import React, { useState } from 'react'
+import {useInputValidation} from "6pp"
+import {Search as SearchIcon} from '@mui/icons-material'
+import UserItem from '../Shared/UserItem'
+import { sampleuser } from '../../Constants/Sample'
 
 const Search = () => {
+  const [users, setUsers] = useState(sampleuser)
+  const search = useInputValidation("");
+  const isLoadingSendFriendRequest = false;
+  const addFriendHandler = (_id) =>{
+    console.log(_id)
+  }
   return (
-    <div>Search</div>
-  )
+    <Dialog open>
+      <Stack p={"2rem"} direction={"column"} width={"25rem"}>
+        <DialogTitle textAlign={"center"}>Find People</DialogTitle>
+        <TextField
+          label=""
+          value={search.value}
+          onChange={search.changeHandler}
+          variant="outlined"
+          size="small"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <List>
+          {users.map((i) => (
+            <UserItem
+              user={i}
+              key={i._id}
+              handler={addFriendHandler}
+              handlerLoading={isLoadingSendFriendRequest}
+            />
+          ))}
+        </List>
+      </Stack>
+    </Dialog>
+  );
 }
 
 export default Search

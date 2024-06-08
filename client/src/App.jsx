@@ -10,7 +10,7 @@ const Groups = lazy(() => import("./Pages/Groups"));
 const NotFound = lazy(() => import("./Pages/NotFound"));
 
 function App() {
- let user =true;
+ let user = true
   return (
     <BrowserRouter>
       <Suspense fallback={<LayoutLoader />}>
