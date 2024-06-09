@@ -50,21 +50,25 @@ const NotificationsItem = memo(({ sender, _id, handler }) => {
           sx={{
             flexGrow: 1,
             display: "-webkit-box",
-            WebkitLineClamp: 1,
+            WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical",
             overflow: "hidden",
             textOverflow: "ellipsis",
             width: "100%",
           }}
         >
-          {`${name} Request`}
+         <div style={{margin: "0px"}}><div style={{fontSize:"1.5rem"}}>{name}</div> sends you friend request</div>
         </Typography>
-        <Stack direction={{
-          xs:"column",
-          sm:"row"
-        }}>
-          <Button onClick={()=>handler({_id, accept:true})}>Accept</Button>
-          <Button color="error" onClick={()=>handler({_id, accept:false})}>Reject</Button>
+        <Stack
+          direction={{
+            xs: "column",
+            sm: "row",
+          }}
+        >
+          <Button onClick={() => handler({ _id, accept: true })}>Accept</Button>
+          <Button color="error" onClick={() => handler({ _id, accept: false })}>
+            Reject
+          </Button>
         </Stack>
       </Stack>
     </ListItem>

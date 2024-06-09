@@ -3,6 +3,7 @@ import React, { Suspense, lazy, useState } from 'react'
 import { blue } from '../../Constants/Color'
 import {Add as AddIcon, Group as GroupIcon, Logout as LogoutIcon, Menu as ManiIcon, Notifications as NotificationsIcon, Search as SearchIcon} from '@mui/icons-material'
 import {useNavigate} from 'react-router-dom'
+import NewGroup from '../Specific/NewGroup'
 const Search = lazy(() => import("../Specific/Search"));
 const Notifications = lazy( () =>  import('../Specific/Notifications'))
 
@@ -96,6 +97,11 @@ function Header() {
       {isNotification && (
         <Suspense fallback={<Backdrop open />}>
           <Notifications />
+        </Suspense>
+      )}
+      {isNewGroup && (
+        <Suspense fallback={<Backdrop open />}>
+          <NewGroup />
         </Suspense>
       )}
     </>

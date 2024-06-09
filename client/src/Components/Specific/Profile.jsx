@@ -43,7 +43,7 @@ const ProfileCard = ({text, Icon, heading}) => {
         color={"black"}
         textAlign={"center"}
     >
-        {Icon && Icon}
+        {Icon}
         <Stack>
             <Typography variant='bady1'> {text}</Typography>
             <Typography color={"gray"} variant='caption'>{heading}</Typography>
