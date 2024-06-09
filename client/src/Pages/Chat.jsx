@@ -5,5 +5,5 @@ function Chat() {
     <div>Chat</div>
   )
 }
-
+ 
 export default AppLayout()(Chat); 

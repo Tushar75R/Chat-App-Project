@@ -48,9 +48,10 @@ const AppLayout = () => (WrappedComponent) => {
                 sx={{
                   display: { xs: "none", md: "block" },
                   padding: "2rem",
+                  backgroundImage:
+                    "linear-gradient(315deg, #2AF598 2%, #08AEEA 51%, #fa8bff 99%)",
                 }}
                 height={"100%"}
-                bgcolor={"#ADD8E6"}
               >
                 <Profile />
               </Grid>
