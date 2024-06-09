@@ -1,3 +1,4 @@
+
 export const samplechats = [
   {
     avatar:
@@ -48,5 +49,57 @@ export const sampleNotification = [
       name: "anaconda",
     },
     _id: "2",
+  },
+];
+
+export const sampleMessage = [
+  {
+    attachments: [
+      {
+        public_id: "asdsad",
+        url: "https://www.emrearal.com/wp-content/uploads/2018/10/avatar-logo-old.jpg",
+      },
+    ],
+    content: "hello world",
+    _id: "kcmdsopmdsv",
+    sender: {
+      _id: "user._id",
+      name: "aviational",
+    },
+    chat: "chatId",
+    createdAt: "2001-09-21T00:00:00.000Z",
+  },
+  {
+    attachments: [
+      {
+        public_id: "asdsad",
+        url: "https://www.emrearal.com/wp-content/uploads/2018/10/avatar-logo-old.jpg",
+      },
+    ],
+    content: "dafole su world",
+    _id: "kcmdsopmdsv",
+    sender: {
+      _id: "sfsnfa",
+      name: "aviational",
+    },
+    chat: "chatId",
+    createdAt: "2001-09-21T00:00:00.000Z",
+  },
+  {
+    attachments: [
+      {
+        public_id: "asdsad",
+        url: "https://www.emrearal.com/wp-content/uploads/2018/10/avatar-logo-old.jpg",
+      },
+    ],
+    content:
+      "me to boluga",
+    _id: "kcmdsopmdsv",
+    sender: {
+      _id: "user._id",
+      name: "aviational",
+    },
+    chat: "chatId",
+    createdAt: "2001-09-21T00:00:00.000Z",
   },
 ];

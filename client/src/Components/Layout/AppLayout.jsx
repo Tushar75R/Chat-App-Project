@@ -28,6 +28,8 @@ const AppLayout = () => (WrappedComponent) => {
                 height={"100%"}
                 sx={{
                   display: { xs: "none", sm: "block" },
+                  backgroundImage:
+                    "linear-gradient(163deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%)",
                 }}
               >
                 <ChatList
@@ -49,7 +51,7 @@ const AppLayout = () => (WrappedComponent) => {
                   display: { xs: "none", md: "block" },
                   padding: "2rem",
                   backgroundImage:
-                    "linear-gradient(315deg, #2AF598 2%, #08AEEA 51%, #fa8bff 99%)",
+                    "linear-gradient(200deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%)",
                 }}
                 height={"100%"}
               >
