@@ -1,7 +1,9 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import {blue} from '../../Constants/Color'
 import React,{memo} from 'react'
 import moment from 'moment';
+import { fileFormat } from '../../Lib/features';
+import RenderAttachment from './RenderAttachment';
 
 const MessegeComponent = ({message, user}) => {
   const { sender, content, attachments = [], createdAt } = message;
@@ -31,6 +33,27 @@ const MessegeComponent = ({message, user}) => {
             {sender.name}
           </Typography>
         )}
+        
+        {attachments.length > 0 && attachments.map((i, index) => {
+          const url = i.url;
+          const file = fileFormat(url)
+          
+          return (
+            <Box key={index}>
+              <a
+                href={url}
+                target='_blank'
+                download
+                style={{
+                  color: 'black'
+                }}
+              >
+                {RenderAttachment(file,url)}
+              </a>
+
+            </Box>
+          )
+        })}
         {content && (
           <Typography padding={"0.5rem 1.5rem"}>{content}</Typography>
         )}

@@ -54,12 +54,7 @@ export const sampleNotification = [
 
 export const sampleMessage = [
   {
-    attachments: [
-      {
-        public_id: "asdsad",
-        url: "https://www.emrearal.com/wp-content/uploads/2018/10/avatar-logo-old.jpg",
-      },
-    ],
+    attachments: [],
     content: "hello world",
     _id: "kcmdsopmdsv",
     sender: {
@@ -80,23 +75,6 @@ export const sampleMessage = [
     _id: "kcmdsopmdsv",
     sender: {
       _id: "sfsnfa",
-      name: "aviational",
-    },
-    chat: "chatId",
-    createdAt: "2001-09-21T00:00:00.000Z",
-  },
-  {
-    attachments: [
-      {
-        public_id: "asdsad",
-        url: "https://www.emrearal.com/wp-content/uploads/2018/10/avatar-logo-old.jpg",
-      },
-    ],
-    content:
-      "me to boluga",
-    _id: "kcmdsopmdsv",
-    sender: {
-      _id: "user._id",
       name: "aviational",
     },
     chat: "chatId",

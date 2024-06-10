@@ -29,7 +29,7 @@ const AppLayout = () => (WrappedComponent) => {
                 sx={{
                   display: { xs: "none", sm: "block" },
                   backgroundImage:
-                    "linear-gradient(163deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%)",
+                    " linear-gradient(163deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%)",
                 }}
               >
                 <ChatList
