@@ -6,7 +6,7 @@ const AvatarCard = ({avatar =[], max = 4}) => {
   return (
     <Stack direction={"row"} spacing={0.5}>
       <Box width={"5rem"} height={"3rem"}>
-        <AvatarGroup max={4}>
+        <AvatarGroup max={max} sx={{ position: "relative" }}>
           {avatar.map((i, index) => (
             <Avatar
               key={Math.random() * 100}

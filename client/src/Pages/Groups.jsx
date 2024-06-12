@@ -7,6 +7,7 @@ import {Link} from '../Components/Style/StyledComponent'
 import AvatarCard from "../Components/Shared/AvatarCard";
 import {samplechats, sampleuser} from '../Constants/Sample'
 import UserItem from '../Components/Shared/UserItem'
+import { NavBarColor } from '../Constants/Color'
 
 const ConfirmDeleteDialog = lazy(() => import('../Components/Dialogs/ConfirmDeleteDialog'))
 const AddMemberDialog = lazy(() => import('../Components/Dialogs/AddMemberDialog'))
@@ -52,8 +53,8 @@ function Groups() {
     <Box
       sx={{
         display:{
-          sm: 'block',  
-          md:"none",
+          xs: 'block',  
+          sm:"none",
           position:"fixed",
           right:"1rem",
           top:"1rem"
@@ -143,6 +144,7 @@ function Groups() {
         xs:"0",
         sm:"1rem",
         md:"1rem 4rem"
+
       }}
       margin={"1rem"}
     >
@@ -164,18 +166,17 @@ function Groups() {
           sx={{
             display: {
               xs: "none",
-              md: "block",
+              sm: "block",
             },
           }}
           sm={4}
-          bgcolor={"bisque"}
         >
           <GroupList myGroups={samplechats} chatId={chatId} />
         </Grid>
         <Grid
           item
           xs={12}
-          md={8}
+          sm={8}
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -205,17 +206,16 @@ function Groups() {
                 height={"50vh"}
                 overflow={"auto"}
               >
-
                 {sampleuser.map((i) => (
-                  <UserItem 
+                  <UserItem
                     key={i._id}
-                    user={i} 
-                    isAdded 
-                    styling={{ 
-                      boxShadow: "0 0 0.5rem rgba(0, 0, 0, 0.2)"
-                      ,padding: "1rem 2rem"
-                      ,borderRadius: "1rem"
-                  }}
+                    user={i}
+                    isAdded
+                    styling={{
+                      boxShadow: "0 0 0.5rem rgba(0, 0, 0, 0.2)",
+                      padding: "1rem 2rem",
+                      borderRadius: "1rem",
+                    }}
                     handler={removeMemberHandler}
                   />
                 ))}
@@ -240,23 +240,40 @@ function Groups() {
           </Suspense>
         )}
 
-        <Drawer open={isMobileMenu} onClose={handleMobileClose}>
-          <GroupList w={"50%"} myGroups={samplechats} chatId={chatId} />
+        <Drawer
+          sx={{
+            display: {
+              xs: "block",
+              sm: "none",
+            },
+          }}
+          open={isMobileMenu}
+          onClose={handleMobileClose}
+        >
+          <GroupList myGroups={samplechats} chatId={chatId} />
         </Drawer>
       </Grid>
     </>
   );
 }
-
-const GroupList = ({w = "100%", myGroups = [] , chatId}) => (
-  <Stack width={w}>
-    {myGroups.length > 0 ?
-      (myGroups.map((group) =><GroupListItem group={group} chatId={chatId} key={group._id} />)
-    ):(
-      <Typography textAlign={"center"} padding={"1rem"}> No Groups</Typography>
+const GroupList = ({ w = "100%", myGroups = [], chatId}) => (
+  <Stack
+    width={w}
+    sx={{ backgroundImage: NavBarColor, height: "100vh" }}
+    overflow={"auto"}
+  >
+    {myGroups.length > 0 ? (
+      myGroups.map((group) => (
+        <GroupListItem group={group} chatId={chatId} key={group._id} />
+      ))
+    ) : (
+      <Typography textAlign={"center"} padding={"1rem"}>
+        {" "}
+        No Groups
+      </Typography>
     )}
   </Stack>
-)
+);
 
 const GroupListItem = memo(({group, chatId}) => {
   const {name, avatar, _id} = group;
