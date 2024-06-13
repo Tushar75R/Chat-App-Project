@@ -101,6 +101,7 @@ const AdminLayout = ({ children }) => {
     setIsMobile(false);
   };
   if (!admin) return <Navigate to={"/admin"} />;
+  
   return (
     <Grid container minHeight={"100vh"}>
       <Box
@@ -110,8 +111,8 @@ const AdminLayout = ({ children }) => {
             md: "none",
           },
           position: "fixed",
-          right: "1rem",
-          top: "1rem",
+          right: "2rem",
+          top: "2rem",
         }}
       >
         <IconButton onClick={handleMobile}>
