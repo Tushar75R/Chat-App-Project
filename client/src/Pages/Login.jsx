@@ -55,6 +55,7 @@ function Login() {
                   width: "100%",
                   marginTop: "1rem",
                 }}
+                onSubmit={handleLogin}
               >
                 <TextField
                   required
@@ -81,7 +82,6 @@ function Login() {
                   color="primary"
                   fullWidth
                   variant="contained"
-                  onClick={handleLogin}
                 >
                   Login
                 </Button>

@@ -8,9 +8,6 @@ const Container = styled("div")({
   justifyContent: "center",
   alignItems: "center",
   overflow: "hidden",
-  background:
-    'url("./src/assets/pagenotfound.jpg") no-repeat left top',
-  backgroundSize: "cover",
 });
 
 const Text = styled("div")({
@@ -37,10 +34,9 @@ const H2 = styled("h2")({
 });
 
 const H3 = styled("h3")({
-  color: "white",
+  color: "black",
   marginLeft: "30px",
   fontSize: "2em",
-  textShadow: "-5px 5px 0px rgba(0,0,0,0.7)",
   marginTop: "-40px",
   fontFamily: "monospace",
   fontWeight: "bold",
