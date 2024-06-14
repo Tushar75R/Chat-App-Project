@@ -2,9 +2,9 @@ import { AvatarGroup, Stack, Box, Avatar } from '@mui/material'
 import React from 'react'
 import { transformImage } from "../../Lib/features";
 
-const AvatarCard = ({avatar =[], max = 4}) => {
+const AvatarCard = ({avatar =[], max = 4, style}) => {
   return (
-    <Stack direction={"row"} spacing={0.5}>
+    <Stack direction={"row"} spacing={0.5} style={style}>
       <Box width={"5rem"} height={"3rem"}>
         <AvatarGroup max={max} sx={{ position: "relative" }}>
           {avatar.map((i, index) => (
