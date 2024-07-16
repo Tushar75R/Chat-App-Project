@@ -7,17 +7,19 @@ const schema = new Schema(
       required: true,
     },
     groupChat: {
-      type: boolean,
+      type: Boolean,
       default: false,
     },
-    creater: {
+    creator: {
       type: Types.ObjectId,
       ref: "User",
     },
-    members: {
-      type: Types.ObjectId,
-      ref: "User",
-    },
+    members: [
+      {
+        type: Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     timestamps: true,

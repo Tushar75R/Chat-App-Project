@@ -24,4 +24,8 @@ const sendToken = (res, user, code, message) => {
     .cookie("access_token", token, cookieOption)
     .json({ success: true, message });
 };
-export { connectDB, sendToken, cookieOption };
+
+const emitEvent = (req, event, users, data) => {
+  console.log("emitEvent", event);
+};
+export { connectDB, sendToken, cookieOption, emitEvent };
