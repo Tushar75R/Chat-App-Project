@@ -8,11 +8,16 @@ import {
 } from "../controllers/user.controllers.js";
 import { singleAvatar } from "../middlewares/multer.middleware.js";
 import { isAuthenticated } from "../middlewares/auth.middleware.js";
+import {
+  loginValidator,
+  registerValidator,
+  validateHandler,
+} from "../lib/validators.js";
 
 const app = express.Router();
 
-app.post("/new", singleAvatar, newUser);
-app.post("/login", login);
+app.post("/new", singleAvatar, registerValidator(), validateHandler, newUser);
+app.post("/login", loginValidator(), validateHandler, login);
 
 //After that user must be logged in
 app.use(isAuthenticated);
