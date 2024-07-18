@@ -85,4 +85,6 @@ export {
   sendAttachmentsValidator,
   chatIdValidator,
   renameValidator,
+  sendRequestValidator,
+  acceptRequestValidator,
 };

@@ -1,8 +1,11 @@
 import { TryCatch } from "../middlewares/error.middleware.js";
-import { User } from "../models/user.model.js";
-import { cookieOption, sendToken } from "../utils/features.js";
+import { cookieOption, emitEvent, sendToken } from "../utils/features.js";
 import { compare } from "bcrypt";
 import { ErrorHandler } from "../utils/utilitys.js";
+import { User } from "../models/user.model.js";
+import { Chat } from "../models/chat.model.js";
+import { Request } from "../models/request.model.js";
+import { NEW_REQUEST } from "../constants/event.js";
 
 const newUser = async (req, res) => {
   const { name, username, password, bio } = req.body;
@@ -58,10 +61,55 @@ const logout = TryCatch(async (req, res) => {
 });
 
 const searchUser = TryCatch(async (req, res) => {
-  const { name } = req.query;
-  return res
-    .status(200)
-    .json({ success: true, message: `successfully ${name}` });
+  const { name = "" } = req.query;
+
+  const myChat = await Chat.find({ groupChat: false, members: req.user });
+
+  const allUsersFromMyChat = myChat.flatMap((chat) => chat.members);
+
+  const allUsersExceptMeandFriends = await User.find({
+    _id: { $nin: allUsersFromMyChat },
+    name: { $regex: name, $options: "i" },
+  });
+  const user = allUsersExceptMeandFriends.map(({ _id, name, avatar }) => ({
+    _id,
+    name,
+    avatar: avatar.url,
+  }));
+  return res.status(200).json({ success: true, message: user });
 });
 
-export { login, newUser, getMyProfile, logout, searchUser };
+const sendFriendRequest = TryCatch(async (req, res, next) => {
+  const { userId } = req.body;
+  const request = await Request.findOne({
+    $or: [
+      { sender: userId, receiver: req.user },
+      { sender: req.user, receiver: userId },
+    ],
+  });
+  if (request) return next(ErrorHandler("Request already sent", 404));
+
+  await Request.create({
+    sender: req.user,
+    receiver: userId,
+  });
+
+  emitEvent(req, NEW_REQUEST, [userId]);
+  return res.status(200).json({
+    success: true,
+    message: "Friend request sent",
+  });
+});
+
+const acceptFriendRequest = TryCatch(async (req, res, next) => {
+  const { requestId, accept } = req.body;
+});
+export {
+  login,
+  newUser,
+  getMyProfile,
+  logout,
+  searchUser,
+  sendFriendRequest,
+  acceptFriendRequest,
+};
