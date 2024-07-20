@@ -86,4 +86,5 @@ export {
   renameValidator,
   sendRequestValidator,
   acceptRequestValidator,
+  adminLoginValidator,
 };
