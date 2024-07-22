@@ -31,7 +31,7 @@ app.use(isAuthenticated);
 
 app.post("/new", newGroupValidator(), validateHandler, newGroupChat);
 
-app.post("/my", getMyChat);
+app.get("/my", getMyChat);
 
 app.get("/my/groups", getMyGroups);
 

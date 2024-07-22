@@ -24,7 +24,6 @@ const app = express.Router();
 
 app.post("/new", singleAvatar, registerValidator(), validateHandler, newUser);
 app.post("/login", loginValidator(), validateHandler, login);
-
 //After that user must be logged in
 app.use(isAuthenticated);
 app.get("/me", getMyProfile);

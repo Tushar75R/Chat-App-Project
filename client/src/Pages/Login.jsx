@@ -1,26 +1,89 @@
-import React, { useState } from 'react'
-import {Avatar, Button, Container, IconButton, Paper, Stack, TextField, Typography} from '@mui/material'
-import {CameraAlt as CameraAltIcon} from '@mui/icons-material'
-import { VisuallyHiddenInput } from '../Components/Style/StyledComponent';
-import {useFileHandler, useInputValidation} from '6pp'
-import { usernameValidator } from '../Utils/validator';
+import React, { useState } from "react";
+import {
+  Avatar,
+  Button,
+  Container,
+  IconButton,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { CameraAlt as CameraAltIcon } from "@mui/icons-material";
+import { VisuallyHiddenInput } from "../Components/Style/StyledComponent";
+import { useFileHandler, useInputValidation } from "6pp";
+import { usernameValidator } from "../Utils/validator";
+import { useDispatch, useSelector } from "react-redux";
+import { userExists, userNotExists } from "../redux/reducers/auth";
+import { toast } from "react-hot-toast";
+import axios from "axios";
+import { server } from "../Constants/config";
 
 function Login() {
-  const [isLogin, setisLogin] =useState(true);
-  const toggleLogin = () => setisLogin(prev => !prev);
+  const [isLogin, setisLogin] = useState(true);
+  const toggleLogin = () => setisLogin((prev) => !prev);
 
   const name = useInputValidation("");
   const password = useInputValidation("");
   const username = useInputValidation("", usernameValidator);
   const bio = useInputValidation("");
   const avatar = useFileHandler("single");
+  const dispatch = useDispatch();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const config = {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
 
-  const handleLogin = (e) =>{
+    try {
+      console.log(password);
+      const { data } = await axios.post(
+        `${server}/api/v1/user/login`,
+        {
+          username: username.value,
+          password: password.value,
+        },
+        config
+      );
+      dispatch(userExists(true));
+      toast.success(data.message);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Something Went Wrong");
+    }
+  };
+  const handleSignUp = async (e) => {
     e.preventDefault();
-  }
-  const handleSignUp = (e) => {
-    e.preventDefault();
-  }
+    const formData = new FormData();
+    formData.append("avatar", avatar.file);
+    formData.append("name", name.value);
+    formData.append("bio", bio.value);
+    formData.append("username", username.value);
+    formData.append("password", password.value);
+
+    const config = {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    try {
+      const { data } = await axios.post(
+        `${server}/api/v1/user/new`,
+        formData,
+        config
+      );
+      console.log("here");
+
+      dispatch(userExists(true));
+      toast.success(data.message);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Something Went Wrong");
+    }
+  };
   return (
     <div
       style={{
@@ -210,4 +273,4 @@ function Login() {
   );
 }
 
-export default Login
+export default Login;

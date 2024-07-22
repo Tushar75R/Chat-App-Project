@@ -1,14 +1,14 @@
-import { Add as AddIcon, Remove as RemoveIcon} from '@mui/icons-material';
-import { Avatar, IconButton, ListItem, Stack, Typography } from '@mui/material';
-import React,{memo} from 'react'
-import { transformImage } from '../../Lib/features';
+import { Add as AddIcon, Remove as RemoveIcon } from "@mui/icons-material";
+import { Avatar, IconButton, ListItem, Stack, Typography } from "@mui/material";
+import React, { memo } from "react";
+import { transformImage } from "../../Lib/features";
 
 const UserItem = ({
   user,
   handler,
   handlerLoading,
   isAdded = false,
-  styling={},
+  styling = {},
 }) => {
   const { name, _id, avatar } = user;
   return (
@@ -20,7 +20,7 @@ const UserItem = ({
         width={"100%"}
         {...styling}
       >
-        <Avatar src={transformImage(avatar[0])} />
+        <Avatar src={transformImage(avatar)} />
         <Typography
           variant="body1"
           sx={{
@@ -53,4 +53,4 @@ const UserItem = ({
   );
 };
 
-export default memo(UserItem)
+export default memo(UserItem);

@@ -1,5 +1,10 @@
 import { TryCatch } from "../middlewares/error.middleware.js";
-import { cookieOption, emitEvent, sendToken } from "../utils/features.js";
+import {
+  cookieOption,
+  emitEvent,
+  sendToken,
+  uploadFilesToCloudinary,
+} from "../utils/features.js";
 import { compare } from "bcrypt";
 import { ErrorHandler } from "../utils/utilitys.js";
 import { User } from "../models/user.model.js";
@@ -9,12 +14,15 @@ import { NEW_REQUEST, REFETCH_CHATS } from "../constants/event.js";
 import { getOtherMember } from "../lib/helper.js";
 
 const newUser = TryCatch(async (req, res, next) => {
+  console.log("here");
   const { name, username, password, bio } = req.body;
   const file = req.file;
   if (!file) return next(ErrorHandler("avatar is required", 404));
+
+  const result = await uploadFilesToCloudinary([file]);
   const avatar = {
-    public_id: "ss",
-    url: "ifs",
+    public_id: result[0].public_id,
+    url: result[0].url,
   };
   const user = await User.create({
     name,
@@ -79,7 +87,7 @@ const searchUser = TryCatch(async (req, res) => {
     name,
     avatar: avatar.url,
   }));
-  return res.status(200).json({ success: true, message: user });
+  return res.status(200).json({ success: true, users: user });
 });
 
 const sendFriendRequest = TryCatch(async (req, res, next) => {

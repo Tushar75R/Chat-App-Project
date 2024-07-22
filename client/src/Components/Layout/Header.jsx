@@ -1,38 +1,68 @@
-import { AppBar, Backdrop, Box, IconButton, Toolbar, Tooltip, Typography } from '@mui/material'
-import React, { Suspense, lazy, useState } from 'react'
-import { blue } from '../../Constants/Color'
-import {Add as AddIcon, Group as GroupIcon, Logout as LogoutIcon, Menu as ManiIcon, Notifications as NotificationsIcon, Search as SearchIcon} from '@mui/icons-material'
-import {useNavigate} from 'react-router-dom'
-import NewGroup from '../Specific/NewGroup'
+import {
+  AppBar,
+  Backdrop,
+  Box,
+  IconButton,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import React, { Suspense, lazy, useState } from "react";
+import { blue } from "../../Constants/Color";
+import {
+  Add as AddIcon,
+  Group as GroupIcon,
+  Logout as LogoutIcon,
+  Menu as ManiIcon,
+  Notifications as NotificationsIcon,
+  Search as SearchIcon,
+} from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import NewGroup from "../Specific/NewGroup";
+import axios from "axios";
+import { server } from "../../Constants/config";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { userNotExists } from "../../redux/reducers/auth";
+import {
+  setIsMobile,
+  setIsNotification,
+  setIsSearch,
+} from "../../redux/reducers/misc";
 const Search = lazy(() => import("../Specific/Search"));
-const Notifications = lazy( () =>  import('../Specific/Notifications'))
+const Notifications = lazy(() => import("../Specific/Notifications"));
 
 function Header() {
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isSearch, isNotification } = useSelector((state) => state.misc);
 
-  const [isMobile, setIsMobile] = useState(false);
-  const [isSearch, setIsSearch] = useState(false);
   const [isNewGroup, setIsNewGroup] = useState(false);
-  const [isNotification, setIsNotification] = useState(false);
-  
-  
-  const handleMobile = ()=>{
-    setIsMobile(prev => !prev)
-  }
+
+  const handleMobile = () => {
+    dispatch(setIsMobile(true));
+  };
   const openSerch = () => {
-    setIsSearch((prev) => !prev);
+    dispatch(setIsSearch(true));
   };
   const openNewGroup = () => {
     setIsNewGroup((prev) => !prev);
   };
   const openNotification = () => {
-    setIsNotification((prev) => !prev);
+    dispatch(setIsNotification(true));
   };
-  const NavigateToGroup = () => navigate('/groups')
-  const LogoutHandler = () =>{
-    console.log("logout");
-  }
+  const NavigateToGroup = () => navigate("/groups");
+  const LogoutHandler = async () => {
+    try {
+      const { data } = await axios.get(`${server}/api/v1/user/logout`, {
+        withCredentials: true,
+      });
+      dispatch(userNotExists());
+      toast.success(data.message);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Something Went Wrong");
+    }
+  };
   return (
     <>
       <Box sx={{ flexGrow: 1 }} height={"4rem"}>
@@ -45,7 +75,7 @@ function Header() {
           <Toolbar>
             <Typography
               variant="h6"
-              sx={{ display: { xs: "none", sm: "block" }, cursor:'pointer' } }
+              sx={{ display: { xs: "none", sm: "block" }, cursor: "pointer" }}
             >
               P-chat
             </Typography>
@@ -108,14 +138,14 @@ function Header() {
   );
 }
 
-const IconBtn = ({title, icon, onClick}) =>{
+const IconBtn = ({ title, icon, onClick }) => {
   return (
     <Tooltip title={title}>
-      <IconButton color="inherit" size='large' onClick={onClick}>
+      <IconButton color="inherit" size="large" onClick={onClick}>
         {icon}
       </IconButton>
     </Tooltip>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
