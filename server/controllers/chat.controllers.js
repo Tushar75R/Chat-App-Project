@@ -1,7 +1,11 @@
 import { TryCatch } from "../middlewares/error.middleware.js";
 import { ErrorHandler } from "../utils/utilitys.js";
 import { Chat } from "../models/chat.model.js";
-import { deleteFilesFromCloudinary, emitEvent } from "../utils/features.js";
+import {
+  deleteFilesFromCloudinary,
+  emitEvent,
+  uploadFilesToCloudinary,
+} from "../utils/features.js";
 import {
   ALERT,
   NEW_ATTACHMENT,
@@ -227,7 +231,7 @@ const sendAttachment = TryCatch(async (req, res, next) => {
   if (files.length < 1) return next(ErrorHandler("Please provise files", 400));
 
   //Upload files
-  const attachments = [];
+  const attachments = await uploadFilesToCloudinary(files);
 
   const messageForDB = {
     content: "",
@@ -374,7 +378,7 @@ const getMessages = TryCatch(async (req, res, next) => {
   const totalPages = Math.ceil(totalMessagesCount / resultPerPage) || 0;
   return res.status(200).json({
     success: true,
-    message: messages.reverse(),
+    messages: messages.reverse(),
     totalPages,
   });
 });

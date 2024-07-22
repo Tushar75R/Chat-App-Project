@@ -14,6 +14,9 @@ import chatRoute from "./routes/chat.routes.js";
 import adminRoute from "./routes/admin.routes.js";
 import { NEW_MESSAGE, NEW_MESSAGE_ALERT } from "./constants/event.js";
 import { getSockets } from "./lib/helper.js";
+import { corsOption } from "./constants/config.js";
+import { socketAuthenticator } from "./middlewares/auth.middleware.js";
+import { Message } from "./models/message.model.js";
 dotenv.config({
   path: "./.env",
 });
@@ -33,20 +36,13 @@ cloudinary.config({
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server, {});
+const io = new Server(server, {
+  cors: corsOption,
+});
 
 app.use(cookieParser());
 app.use(express.json());
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:4173",
-      process.env.CLIENT_URL,
-    ],
-    credentials: true,
-  })
-);
+app.use(cors(corsOption));
 
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/chat", chatRoute);
@@ -55,16 +51,19 @@ app.get("/", (req, res) => {
   console.log("Hello World");
 });
 
-io.use((socket, next) => {});
+io.use((socket, next) => {
+  cookieParser()(
+    socket.request,
+    socket.request.res,
+    async (err) => await socketAuthenticator(err, socket, next)
+  );
+});
 
 io.on("connection", (socket) => {
-  console.log("Connection", socket.id);
-  const user = {
-    _id: "asas",
-    name: "asas",
-  };
+  const user = socket.user;
+
   userSocketIDs.set(user._id.toString(), socket.id);
-  console.log(userSocketIDs);
+
   socket.on(NEW_MESSAGE, async ({ chatId, members, message }) => {
     const messageForRealTime = {
       content: message,
@@ -76,13 +75,11 @@ io.on("connection", (socket) => {
       chat: chatId,
       createdAt: new Date().toISOString(),
     };
-    console.log(messageForRealTime);
     const messageForDB = {
       content: message,
       sender: user._id,
       chat: chatId,
     };
-
     const membersSocket = getSockets(members);
     io.to(membersSocket).emit(NEW_MESSAGE, {
       chatId,
@@ -109,4 +106,4 @@ server.listen(port, (err) => {
   console.log(`server listening on ${port} and in ${envMode} mode`);
 });
 
-export { adminSecretKey, envMode };
+export { adminSecretKey, envMode, userSocketIDs };
