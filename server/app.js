@@ -39,7 +39,7 @@ const server = createServer(app);
 const io = new Server(server, {
   cors: corsOption,
 });
-
+app.set("io", io);
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors(corsOption));

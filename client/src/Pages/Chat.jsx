@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import AppLayout from "../Components/Layout/AppLayout";
 import { IconButton, Skeleton, Stack } from "@mui/material";
 import {
@@ -11,12 +11,17 @@ import FileMenu from "../Components/Dialogs/FileMenu";
 import { sampleMessage } from "../Constants/Sample";
 import MessegeComponent from "../Components/Shared/MessegeComponent";
 import { getSocket } from "../socket";
-import { NEW_MESSAGE } from "../Constants/event";
+import {
+  NEW_MESSAGE,
+  NEW_MESSAGE_ALERT,
+  NEW_REQUEST,
+} from "../Constants/event";
 import { useChatDetailsQuery, useGetMessagesQuery } from "../redux/api/api";
 import { useErrors, useSocketEvents } from "../Hooks/hooks";
 import { useInfiniteScrollTop } from "6pp";
 import { useDispatch } from "react-redux";
 import { setIsFileMenu } from "../redux/reducers/misc";
+import { removeNewMessagesAlert } from "../redux/reducers/chat";
 
 function Chat({ chatId, user }) {
   const containerRef = useRef(null);
@@ -53,6 +58,15 @@ function Chat({ chatId, user }) {
     setMessage("");
   };
 
+  useEffect(() => {
+    dispatch(removeNewMessagesAlert(chatId));
+    return () => {
+      setMessages([]);
+      setMessage("");
+      setOldMessages([]);
+      setPage(1);
+    };
+  }, [chatId]);
   const newMessagesListener = useCallback(
     (data) => {
       if (data.chatId !== chatId) return;
@@ -63,10 +77,7 @@ function Chat({ chatId, user }) {
   );
 
   const eventHandler = {
-    // [ALERT]: alertListener,
     [NEW_MESSAGE]: newMessagesListener,
-    // [START_TYPING]: startTypingListener,
-    // [STOP_TYPING]: stopTypingListener,
   };
   useSocketEvents(socket, eventHandler);
 

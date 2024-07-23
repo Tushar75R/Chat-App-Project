@@ -101,7 +101,7 @@ const FileMenu = ({ anchorEl, chatId }) => {
             <input
               type="file"
               multiple
-              accept="video/mp4,video/webm,video/ogg"
+              accept="video/mp4,video/webm,video/ogg,video/nix"
               style={{ display: "none" }}
               onChange={(e) => fileChangeHandler(e, "Videos")}
               ref={videoRef}
