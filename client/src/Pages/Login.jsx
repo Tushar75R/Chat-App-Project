@@ -21,6 +21,8 @@ import { server } from "../Constants/config";
 
 function Login() {
   const [isLogin, setisLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
   const toggleLogin = () => setisLogin((prev) => !prev);
 
   const name = useInputValidation("");
@@ -31,6 +33,8 @@ function Login() {
   const dispatch = useDispatch();
   const handleLogin = async (e) => {
     e.preventDefault();
+    const toastId = toast.loading("Logging In...");
+    setIsLoading(true);
     const config = {
       withCredentials: true,
       headers: {
@@ -39,7 +43,6 @@ function Login() {
     };
 
     try {
-      console.log(password);
       const { data } = await axios.post(
         `${server}/api/v1/user/login`,
         {
@@ -48,14 +51,21 @@ function Login() {
         },
         config
       );
-      dispatch(userExists(true));
-      toast.success(data.message);
+      dispatch(userExists(data.user));
+      toast.success(data.message, { id: toastId });
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Something Went Wrong");
+      toast.error(error?.response?.data?.message || "Something Went Wrong", {
+        id: toastId,
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
   const handleSignUp = async (e) => {
     e.preventDefault();
+
+    const toastId = toast.loading("Singing Up...");
+    setIsLoading(true);
     const formData = new FormData();
     formData.append("avatar", avatar.file);
     formData.append("name", name.value);
@@ -76,12 +86,15 @@ function Login() {
         formData,
         config
       );
-      console.log("here");
 
-      dispatch(userExists(true));
-      toast.success(data.message);
+      dispatch(userExists(data.user));
+      toast.success(data.message, { id: toastId });
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Something Went Wrong");
+      toast.error(error?.response?.data?.message || "Something Went Wrong", {
+        id: toastId,
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -145,20 +158,28 @@ function Login() {
                   color="primary"
                   fullWidth
                   variant="contained"
+                  disabled={isLoading}
                 >
                   Login
                 </Button>
                 <Typography textAlign={"center "} m={"1rem"}>
                   OR
                 </Typography>
-                <Button fullWidth variant="text" onClick={toggleLogin}>
+                <Button
+                  fullWidth
+                  variant="text"
+                  onClick={toggleLogin}
+                  disabled={isLoading}
+                >
                   Sign Up Instead
                 </Button>
               </form>
             </>
           ) : (
             <>
-              <Typography variant="h5">Sign Up</Typography>
+              <Typography variant="h5" disabled={isLoading}>
+                Sign Up
+              </Typography>
               <form
                 style={{
                   width: "100%",
@@ -255,13 +276,19 @@ function Login() {
                   fullWidth
                   variant="contained"
                   onClick={handleSignUp}
+                  disabled={isLoading}
                 >
                   Sign up
                 </Button>
                 <Typography textAlign={"center "} m={"1rem"}>
                   OR
                 </Typography>
-                <Button fullWidth variant="text" onClick={toggleLogin}>
+                <Button
+                  fullWidth
+                  variant="text"
+                  onClick={toggleLogin}
+                  disabled={isLoading}
+                >
                   Login Instead
                 </Button>
               </form>

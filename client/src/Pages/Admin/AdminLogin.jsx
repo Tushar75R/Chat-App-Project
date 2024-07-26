@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useInputValidation } from "6pp";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Button,
   Container,
@@ -8,18 +9,28 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useInputValidation } from "6pp";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { adminLogin, getAdmin } from "../../redux/thunks/admin";
 
-const isAdmin = true;
 const AdminLogin = () => {
+  const { isAdmin } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword((prev) => !prev);
   };
   const secretKey = useInputValidation("");
-  const submitHandler = () => {};
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(adminLogin(secretKey.value));
+  };
+
+  useEffect(() => {
+    dispatch(getAdmin());
+  }, [dispatch]);
   if (isAdmin) return <Navigate to="/admin/dashboard" />;
   return (
     <div

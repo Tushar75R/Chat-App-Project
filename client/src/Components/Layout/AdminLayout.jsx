@@ -17,7 +17,9 @@ import {
   styled,
 } from "@mui/material";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link as LinkComponent, Navigate, useLocation } from "react-router-dom";
+import { adminLogout } from "../../redux/thunks/admin";
 
 const Link = styled(LinkComponent)`
   text-decoration: none;
@@ -52,10 +54,12 @@ const adminTabs = [
   },
 ];
 
-const admin = true;
 const SideBar = ({ w = "100%" }) => {
   const location = useLocation();
-  const logoutHandler = () => {};
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    dispatch(adminLogout());
+  };
   return (
     <Stack width={w} direction={"column"} spacing={"3rem"} p={"3rem"}>
       <Typography variant="h5" textAlign={"center"}>
@@ -93,6 +97,7 @@ const SideBar = ({ w = "100%" }) => {
   );
 };
 const AdminLayout = ({ children }) => {
+  const { isAdmin } = useSelector((state) => state.auth);
   const [isMobile, setIsMobile] = useState(false);
   const handleMobile = () => {
     setIsMobile((prev) => !prev);
@@ -100,8 +105,8 @@ const AdminLayout = ({ children }) => {
   const handleClose = () => {
     setIsMobile(false);
   };
-  if (!admin) return <Navigate to={"/admin"} />;
-  
+  if (!isAdmin) return <Navigate to={"/admin"} />;
+
   return (
     <Grid container minHeight={"100vh"}>
       <Box

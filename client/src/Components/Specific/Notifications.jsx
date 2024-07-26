@@ -9,9 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 import React, { memo } from "react";
-import { sampleNotification } from "../../Constants/Sample";
+import { useDispatch, useSelector } from "react-redux";
 import { useAsyncMutation, useErrors } from "../../Hooks/hooks";
-import { useSelector, useDispatch } from "react-redux";
 import {
   useAcceptFriendRequestMutation,
   useGetNotificationsQuery,
@@ -25,20 +24,11 @@ const Notifications = () => {
 
   const { isLoading, data, error, isError } = useGetNotificationsQuery();
 
-  // const [acceptRequest] = useAsyncMutation(useAcceptFriendRequestMutation);
-  const [acceptRequest] = useAcceptFriendRequestMutation();
+  const [acceptRequest] = useAsyncMutation(useAcceptFriendRequestMutation);
 
   const friendRequestHandler = async ({ _id, accept }) => {
     dispatch(setIsNotification(false));
-    try {
-      const res = await acceptRequest({ requestId: _id, accept });
-      if (res.data?.success) {
-        console.log("use socket here");
-        toast.success(res.data.message);
-      } else {
-        toast.error("somthing went wrong");
-      }
-    } catch (error) {}
+    await acceptRequest("Accepting...", { requestId: _id, accept });
   };
   const closeHandler = () => dispatch(setIsNotification(false));
 

@@ -26,10 +26,12 @@ import { useDispatch } from "react-redux";
 import { setIsFileMenu } from "../redux/reducers/misc";
 import { removeNewMessagesAlert } from "../redux/reducers/chat";
 import { TypingLoader } from "../Components/Layout/Loaders";
+import { useNavigate } from "react-router-dom";
 
 function Chat({ chatId, user }) {
   const containerRef = useRef(null);
   const socket = getSocket();
+  const navigate = useNavigate();
 
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -128,6 +130,7 @@ function Chat({ chatId, user }) {
 
   const alertListener = useCallback(
     (data) => {
+      console.log(data);
       if (data.chatId !== chatId) return;
       const messageForAlert = {
         content: data.message,

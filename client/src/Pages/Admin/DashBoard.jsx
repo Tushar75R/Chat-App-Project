@@ -1,17 +1,28 @@
-import React from 'react'
-import AdminLayout from '../../Components/Layout/AdminLayout'
-import { Box, Container, Paper, Stack, Typography } from '@mui/material'
+import React from "react";
+import AdminLayout from "../../Components/Layout/AdminLayout";
+import { Box, Container, Paper, Stack, Typography } from "@mui/material";
 import {
   AdminPanelSettings as AdminPanelSettingsIcon,
   Group as GroupIcon,
   Message as MessageIcon,
   Notifications as NotificationsIcon,
-  Person as PersonIcon} from "@mui/icons-material";
-import {CurveButton, SearchField} from '../../Components/Style/StyledComponent'
-import moment from 'moment'
-import { DoughnutChart, LineChart } from '../../Components/Specific/Charts';
+  Person as PersonIcon,
+} from "@mui/icons-material";
+import {
+  CurveButton,
+  SearchField,
+} from "../../Components/Style/StyledComponent";
+import moment from "moment";
+import { DoughnutChart, LineChart } from "../../Components/Specific/Charts";
+import { useFetchData } from "6pp";
+import { server } from "../../Constants/config";
 
 const DashBoard = () => {
+  const { loading, data, error } = useFetchData(
+    `${server}/api/v1/admin/stats`,
+    "dashboard-stats"
+  );
+
   const Appbar = (
     <Paper
       elevation={3}
@@ -41,10 +52,16 @@ const DashBoard = () => {
     </Paper>
   );
   const Widgets = (
-    <Stack direction={{ xs: "column", sm: "row" }} spacing={"2rem"} justifyContent={"space-between"} alignItems={"center"} margin={"2rem 0"}>
-      <Widget title={"Users"} value={34} Icon={<PersonIcon />}/>
+    <Stack
+      direction={{ xs: "column", sm: "row" }}
+      spacing={"2rem"}
+      justifyContent={"space-between"}
+      alignItems={"center"}
+      margin={"2rem 0"}
+    >
+      <Widget title={"Users"} value={34} Icon={<PersonIcon />} />
       <Widget title={"Chats"} value={3} Icon={<GroupIcon />} />
-      <Widget title={"Messages"} value={453} Icon={<MessageIcon />}/>
+      <Widget title={"Messages"} value={453} Icon={<MessageIcon />} />
     </Stack>
   );
   return (
@@ -57,10 +74,10 @@ const DashBoard = () => {
           flexWrap={"wrap"}
           justifyContent={"center"}
           alignItems={{
-            xs:"center",
-            lg:"stretch"
+            xs: "center",
+            lg: "stretch",
           }}
-          sx={{gap:"2rem"}}
+          sx={{ gap: "2rem" }}
         >
           <Paper
             elevation={3}
@@ -113,35 +130,39 @@ const DashBoard = () => {
       </Container>
     </AdminLayout>
   );
-}
+};
 
-const Widget = ({title, value, Icon}) => 
-  <Paper 
+const Widget = ({ title, value, Icon }) => (
+  <Paper
     sx={{
       padding: "2rem",
       margin: "2rem 0",
       borderRadius: "1rem",
-      width: "20rem"
+      width: "20rem",
     }}
-    >
-  <Stack alignItems={"center"} spacing={"1rem"}>
-    <Typography 
-      sx={{
-        color: "rgba(0, 0, 0, 0.7)",
-        borderRadius: "50%",
-        border: "5px solid rgba(0, 0, 0, 0.7)",
-        width: "5rem",
-        height: "5rem",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"  
-      }}
-    > {value}</Typography>
-    <Stack direction={"row"} spacing={"1rem"} alignItems={"center"}>
-      {Icon}
-      <Typography>{title}</Typography>
+  >
+    <Stack alignItems={"center"} spacing={"1rem"}>
+      <Typography
+        sx={{
+          color: "rgba(0, 0, 0, 0.7)",
+          borderRadius: "50%",
+          border: "5px solid rgba(0, 0, 0, 0.7)",
+          width: "5rem",
+          height: "5rem",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {" "}
+        {value}
+      </Typography>
+      <Stack direction={"row"} spacing={"1rem"} alignItems={"center"}>
+        {Icon}
+        <Typography>{title}</Typography>
+      </Stack>
     </Stack>
-  </Stack>
-</Paper>
+  </Paper>
+);
 
-export default DashBoard
+export default DashBoard;

@@ -72,10 +72,18 @@ const DeleteChatMenu = ({ dispatch, deleteMenuAnchor }) => {
         onClick={isGroup ? leaveGroupHandler : deleteChatHandler}
       >
         {isGroup ? (
-          <>
-            <ExitToAppIcon />
-            <Typography>Leave Group</Typography>
-          </>
+          <Stack>
+            <Typography
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ExitToAppIcon />
+              Leave Group
+            </Typography>
+          </Stack>
         ) : (
           <>
             <DeleteIcon />
