@@ -392,7 +392,6 @@ const getMessages = TryCatch(async (req, res, next) => {
   });
 });
 
-const getGroupMembers = TryCatch(async (req, res, next) => {});
 export {
   newGroupChat,
   getMyChat,

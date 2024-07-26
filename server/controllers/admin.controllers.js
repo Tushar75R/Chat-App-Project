@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
+import { adminSecretKey } from "../app.js";
 import { TryCatch } from "../middlewares/error.middleware.js";
-import { User } from "../models/user.model.js";
 import { Chat } from "../models/chat.model.js";
 import { Message } from "../models/message.model.js";
-import { adminSecretKey } from "../app.js";
+import { User } from "../models/user.model.js";
 import { cookieOption } from "../utils/features.js";
 import { ErrorHandler } from "../utils/utilitys.js";
 
@@ -107,15 +107,15 @@ const allMessages = TryCatch(async (req, res) => {
   const messages = await Message.find({})
     .populate("sender", "name avatar")
     .populate("chat", "groupChat");
-
+  console.log(messages);
   const transformedMessages = messages.map(
     ({ content, attachments, _id, sender, createdAt, chat }) => ({
       _id,
       attachments,
       content,
       createdAt,
-      chat: chat._id,
-      groupChat: chat.groupChat,
+      chat: chat?._id,
+      groupChat: chat?.groupChat,
       sender: {
         _id: sender._id,
         name: sender.name,
@@ -123,7 +123,7 @@ const allMessages = TryCatch(async (req, res) => {
       },
     })
   );
-
+  console.log(transformedMessages);
   return res.status(200).json({
     success: true,
     messages: transformedMessages,
@@ -177,11 +177,11 @@ const getDashboardStats = TryCatch(async (req, res) => {
 });
 
 export {
-  allUsers,
-  allChats,
-  allMessages,
-  getDashboardStats,
   adminLogin,
   adminLogout,
+  allChats,
+  allMessages,
+  allUsers,
   getAdminData,
+  getDashboardStats,
 };

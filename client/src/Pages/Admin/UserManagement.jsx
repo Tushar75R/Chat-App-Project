@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import AdminLayout from '../../Components/Layout/AdminLayout'
-import Table from '../../Components/Shared/Table';
-import { Avatar } from '@mui/material';
-import { dashboardData } from '../../Constants/Sample';
-import { transformImage} from '../../Lib/features'
+import React, { useEffect, useState } from "react";
+import AdminLayout from "../../Components/Layout/AdminLayout";
+import Table from "../../Components/Shared/Table";
+import { Avatar, Skeleton } from "@mui/material";
+import { dashboardData } from "../../Constants/Sample";
+import { transformImage } from "../../Lib/features";
+import { useFetchData } from "6pp";
+import { server } from "../../Constants/config";
+import { useErrors } from "../../Hooks/hooks";
 
 const columns = [
   {
@@ -18,7 +21,11 @@ const columns = [
     headerClassName: "table-header",
     width: 150,
     renderCell: (params) => (
-      <Avatar alt={params.row.name} src={params.row.avatar} sx={{marginTop:"1rem"}}/>
+      <Avatar
+        alt={params.row.name}
+        src={params.row.avatar}
+        sx={{ marginTop: "1rem" }}
+      />
     ),
   },
   {
@@ -41,22 +48,45 @@ const columns = [
   },
   {
     field: "groups",
-    headerName: "Groups", 
+    headerName: "Groups",
     headerClassName: "table-header",
     width: 200,
   },
 ];
-const UserManagement = () => { 
+const UserManagement = () => {
+  const { loading, data, error } = useFetchData(
+    `${server}/api/v1/admin/users`,
+    "dashboard-users"
+  );
+
+  useErrors([
+    {
+      isError: error,
+      error: error,
+    },
+  ]);
   const [rows, setRows] = useState([]);
 
-  useEffect(() =>{
-    setRows(dashboardData.users.map((i) => ({...i, id:i._id, avatar:transformImage(i.avatar,50)})))
-  },[]);
+  useEffect(() => {
+    if (data) {
+      setRows(
+        data.users.map((i) => ({
+          ...i,
+          id: i._id,
+          avatar: transformImage(i.avatar, 50),
+        }))
+      );
+    }
+  }, [data]);
   return (
     <AdminLayout>
-      <Table heading={"All Users"} columns={columns} rows={rows} />
+      {loading ? (
+        <Skeleton />
+      ) : (
+        <Table heading={"All Users"} columns={columns} rows={rows} />
+      )}
     </AdminLayout>
   );
-}
+};
 
-export default UserManagement
+export default UserManagement;
