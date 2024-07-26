@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userNotExists } from "../../redux/reducers/auth";
 import {
   setIsMobile,
+  setIsNewGroup,
   setIsNotification,
   setIsSearch,
 } from "../../redux/reducers/misc";
@@ -37,10 +38,10 @@ const Notifications = lazy(() => import("../Specific/Notifications"));
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isSearch, isNotification } = useSelector((state) => state.misc);
+  const { isSearch, isNotification, isNewGroup } = useSelector(
+    (state) => state.misc
+  );
   const { notificationCount } = useSelector((state) => state.chat);
-
-  const [isNewGroup, setIsNewGroup] = useState(false);
 
   const handleMobile = () => {
     dispatch(setIsMobile(true));
@@ -49,7 +50,7 @@ function Header() {
     dispatch(setIsSearch(true));
   };
   const openNewGroup = () => {
-    setIsNewGroup((prev) => !prev);
+    dispatch(setIsNewGroup(true));
   };
   const openNotification = () => {
     dispatch(setIsNotification(true));

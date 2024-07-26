@@ -12,7 +12,12 @@ import { v2 as cloudinary } from "cloudinary";
 import userRoute from "./routes/user.routes.js";
 import chatRoute from "./routes/chat.routes.js";
 import adminRoute from "./routes/admin.routes.js";
-import { NEW_MESSAGE, NEW_MESSAGE_ALERT } from "./constants/event.js";
+import {
+  NEW_MESSAGE,
+  NEW_MESSAGE_ALERT,
+  START_TYPING,
+  STOP_TYPING,
+} from "./constants/event.js";
 import { getSockets } from "./lib/helper.js";
 import { corsOption } from "./constants/config.js";
 import { socketAuthenticator } from "./middlewares/auth.middleware.js";
@@ -91,6 +96,16 @@ io.on("connection", (socket) => {
     } catch (error) {
       throw new Error(error);
     }
+  });
+
+  socket.on(START_TYPING, ({ members, chatId }) => {
+    const membersSockets = getSockets(members);
+    socket.to(membersSockets).emit(START_TYPING, { chatId });
+  });
+
+  socket.on(STOP_TYPING, ({ members, chatId }) => {
+    const membersSockets = getSockets(members);
+    socket.to(membersSockets).emit(STOP_TYPING, { chatId });
   });
 
   socket.on("disconnect", () => {

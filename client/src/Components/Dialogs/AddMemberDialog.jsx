@@ -1,58 +1,87 @@
-import { Button, Dialog, DialogTitle, Stack, Typography } from '@mui/material'
-import React,{useState} from 'react'
-import { sampleuser } from '../../Constants/Sample'
-import UserItem from '../../Components/Shared/UserItem'
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
+import { sampleuser } from "../../Constants/Sample";
+import UserItem from "../../Components/Shared/UserItem";
+import { useDispatch, useSelector } from "react-redux";
+import { useAsyncMutation, useErrors } from "../../Hooks/hooks";
+import {
+  useAddGroupMembersMutation,
+  useAvailableFriendsQuery,
+} from "../../redux/api/api";
+import { setIsAddMember } from "../../redux/reducers/misc";
 
-const AddMemberDialog = ({addMember, isLoadingAddMember, chatId}) => {
+const AddMemberDialog = ({ chatId }) => {
+  const { isAddMember } = useSelector((state) => state.misc);
+  const dispatch = useDispatch();
 
-    const [members, setMembers] = useState(sampleuser);
-    const [selectedMembers, setSelectedMembers] = useState([]);
+  const { isLoading, data, isError, error } = useAvailableFriendsQuery(chatId);
 
-    const addMemberSubmitHandler = () => {
-        
-  }
+  const [addMember, isLoadingAddMember] = useAsyncMutation(
+    useAddGroupMembersMutation
+  );
+  const [selectedMembers, setSelectedMembers] = useState([]);
+
+  const addMemberSubmitHandler = () => {
+    addMember("Adding Member...", { members: selectedMembers, chatId });
+  };
+
   const closeHandler = () => {
-    setSelectedMembers([])
-    setMembers([]);  
-  }
+    dispatch(setIsAddMember(false));
+  };
 
   const selectMemberHandler = (id) => {
     setSelectedMembers((prev) =>
       prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
     );
   };
-    return (
-      <Dialog open onClose={closeHandler}>
-        <Stack p={"2rem"} width={"20rem"} spacing={"2rem"}>
-          <DialogTitle textAlign={"center"}> Add Member</DialogTitle>
-          <Stack spacing={"1rem"} >
-            {members.length > 0 ? (
-              members.map((i) => (
-                <UserItem key={i._id} user={i} handler={selectMemberHandler} isAdded={selectedMembers.includes(i._id)}/>
-              ))
-            ) : (
-              <Typography textAlign={"center"}> No Friends</Typography>
-            )}
-            <Stack
-              direction={"row"}
-              justifyContent={"center"}
-              alignItems={"center"}
+
+  useErrors([{ isError, error }]);
+  return (
+    <Dialog open={isAddMember} onClose={closeHandler}>
+      <Stack p={"2rem"} width={"20rem"} spacing={"2rem"}>
+        <DialogTitle textAlign={"center"}> Add Member</DialogTitle>
+        <Stack spacing={"1rem"}>
+          {isLoading ? (
+            <Skeleton />
+          ) : data?.friends?.length > 0 ? (
+            data?.friends?.map((i) => (
+              <UserItem
+                key={i._id}
+                user={i}
+                handler={selectMemberHandler}
+                isAdded={selectedMembers.includes(i._id)}
+              />
+            ))
+          ) : (
+            <Typography textAlign={"center"}> No Friends</Typography>
+          )}
+          <Stack
+            direction={"row"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <Button color="error" onClick={closeHandler}>
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              disabled={isLoadingAddMember}
+              onClick={addMemberSubmitHandler}
             >
-              <Button color="error" onClick={closeHandler}>
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                disabled={isLoadingAddMember}
-                onClick={addMemberSubmitHandler}
-              >
-                Add
-              </Button>
-            </Stack>
+              Add
+            </Button>
           </Stack>
         </Stack>
-      </Dialog>
-    );
-}
+      </Stack>
+    </Dialog>
+  );
+};
 
-export default AddMemberDialog
+export default AddMemberDialog;

@@ -1,16 +1,16 @@
-import {styled} from '@mui/material'
-import {Link as LinkComponent} from 'react-router-dom'
+import { keyframes, Skeleton, styled } from "@mui/material";
+import { Link as LinkComponent } from "react-router-dom";
 export const VisuallyHiddenInput = styled("input")({
-    border: 0,
-    clip: "rect(0 0 0 0)",
-    height: 1,
-    margin: -1,
-    overflow: "hidden",
-    padding: 0,
-    position: "absolute",
-    whiteSpace: "nowrap",
-    width: "1",
-})
+  border: 0,
+  clip: "rect(0 0 0 0)",
+  height: 1,
+  margin: -1,
+  overflow: "hidden",
+  padding: 0,
+  position: "absolute",
+  whiteSpace: "nowrap",
+  width: "1",
+});
 
 export const Link = styled(LinkComponent)`
   text-decoration: none;
@@ -28,7 +28,7 @@ export const InputBox = styled("input")`
   outline: none;
   padding: 0 3rem;
   border-radius: 1.5rem;
-  background-color: #ADD8E6
+  background-color: #add8e6;
 `;
 
 export const SearchField = styled("input")`
@@ -54,3 +54,12 @@ export const CurveButton = styled("button")`
     background-color: rgba(0, 0, 0, 0.8);
   }
 `;
+const bounceAnimation = keyframes`
+0% { transform: scale(1); }
+50% { transform: scale(1.5); }
+100% { transform: scale(1); }
+`;
+
+export const BouncingSkeleton = styled(Skeleton)(() => ({
+  animation: `${bounceAnimation} 1s infinite`,
+}));
