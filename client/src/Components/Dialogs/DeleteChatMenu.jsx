@@ -1,19 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   Delete as DeleteIcon,
   ExitToApp as ExitToAppIcon,
+  Groups3 as Groups3Icon,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { Menu, Stack, Typography } from "@mui/material";
+import { Avatar, Dialog, Menu, Stack, Typography } from "@mui/material";
 import { useAsyncMutation } from "../../Hooks/hooks";
 import {
+  useChatDetailsQuery,
   useDeleteChatMutation,
   useLeaveGroupMutation,
 } from "../../redux/api/api";
 import { setIsDeleteMenu } from "../../redux/reducers/misc";
+import { transformImage } from "../../Lib/features";
 
-const DeleteChatMenu = ({ dispatch, deleteMenuAnchor }) => {
+const DeleteChatMenu = ({ dispatch, deleteMenuAnchor, chatId }) => {
   const navigate = useNavigate();
   const { isDeleteMenu, selectedDeleteChat } = useSelector(
     (state) => state.misc
@@ -24,7 +27,13 @@ const DeleteChatMenu = ({ dispatch, deleteMenuAnchor }) => {
   const [leaveGroup, __, leaveGroupData] = useAsyncMutation(
     useLeaveGroupMutation
   );
+  const [showMembers, setShowMembers] = useState(false);
 
+  const groupDetails = useChatDetailsQuery(
+    { chatId, populate: true },
+    { skip: !chatId }
+  );
+  const data = groupDetails?.data;
   const isGroup = selectedDeleteChat.groupChat;
 
   const closeHandler = () => {
@@ -42,9 +51,34 @@ const DeleteChatMenu = ({ dispatch, deleteMenuAnchor }) => {
     deleteChat("Deleting Chat...", selectedDeleteChat.chatId);
   };
 
+  const memberHandler = (e) => {
+    setShowMembers(true);
+  };
+
   useEffect(() => {
     if (deleteChatData || leaveGroupData) navigate("/");
   }, [deleteChatData, leaveGroupData]);
+
+  const Members = (data) => {
+    if (data) {
+      return (
+        <Stack width="10vw" padding="1rem">
+          {data.chat.members.map((i) => (
+            <Stack
+              direction={"row"}
+              key={i._id}
+              alignItems="center"
+              spacing="1rem"
+              margin="0.5rem"
+            >
+              <Avatar src={transformImage(i.avatar, 100)} />
+              <Typography>{i.name}</Typography>
+            </Stack>
+          ))}
+        </Stack>
+      );
+    }
+  };
 
   return (
     <Menu
@@ -69,28 +103,50 @@ const DeleteChatMenu = ({ dispatch, deleteMenuAnchor }) => {
         direction={"row"}
         alignItems={"center"}
         spacing={"0.5rem"}
-        onClick={isGroup ? leaveGroupHandler : deleteChatHandler}
+        // onClick={isGroup ? leaveGroupHandler : deleteChatHandler}
       >
         {isGroup ? (
-          <Stack>
+          <Stack spacing="1rem">
             <Typography
               sx={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
+              onClick={(e) => memberHandler(e)}
+            >
+              <Groups3Icon />
+              Members
+            </Typography>
+            <Typography
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onClick={leaveGroupHandler}
             >
               <ExitToAppIcon />
               Leave Group
             </Typography>
           </Stack>
         ) : (
-          <>
+          <Typography
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onClick={deleteChatHandler}
+          >
             <DeleteIcon />
-            <Typography>Delete Chat</Typography>
-          </>
+            Delete Chat
+          </Typography>
         )}
       </Stack>
+      <Dialog open={showMembers} onClose={() => setShowMembers(false)}>
+        {Members(data)}
+      </Dialog>
     </Menu>
   );
 };

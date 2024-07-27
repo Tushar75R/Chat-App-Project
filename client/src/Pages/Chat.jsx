@@ -13,6 +13,8 @@ import MessegeComponent from "../Components/Shared/MessegeComponent";
 import { getSocket } from "../socket";
 import {
   ALERT,
+  CHAT_JOINED,
+  CHAT_LEAVED,
   NEW_MESSAGE,
   NEW_MESSAGE_ALERT,
   NEW_REQUEST,
@@ -85,12 +87,15 @@ function Chat({ chatId, user }) {
   };
 
   useEffect(() => {
+    socket.emit(CHAT_JOINED, { userId: user._id, members });
+
     dispatch(removeNewMessagesAlert(chatId));
     return () => {
       setMessages([]);
       setMessage("");
       setOldMessages([]);
       setPage(1);
+      socket.emit(CHAT_LEAVED, { userId: user._id, members });
     };
   }, [chatId]);
 
@@ -130,7 +135,6 @@ function Chat({ chatId, user }) {
 
   const alertListener = useCallback(
     (data) => {
-      console.log(data);
       if (data.chatId !== chatId) return;
       const messageForAlert = {
         content: data.message,

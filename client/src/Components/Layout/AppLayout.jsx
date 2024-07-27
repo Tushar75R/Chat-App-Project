@@ -1,10 +1,11 @@
 import { Drawer, Grid, Skeleton } from "@mui/material";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   NEW_MESSAGE_ALERT,
   NEW_REQUEST,
+  ONLINE_USERS,
   REFETCH_CHATS,
 } from "../../Constants/event";
 import { useErrors, useSocketEvents } from "../../Hooks/hooks";
@@ -34,6 +35,9 @@ const AppLayout = () => (WrappedComponent) => {
 
     const socket = getSocket();
     const deleteMenuAnchor = useRef(null);
+
+    const [onlineUsers, setOnlineUsers] = useState([]);
+
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth);
     const { isMobile } = useSelector((state) => state.misc);
@@ -70,12 +74,14 @@ const AppLayout = () => (WrappedComponent) => {
       refetch();
       navigate("/");
     }, [refetch, navigate]);
-
+    const onlineUsersListener = useCallback((data) => {
+      setOnlineUsers(data);
+    }, []);
     const eventHandlers = {
       [NEW_MESSAGE_ALERT]: newMessageAlertListener,
       [NEW_REQUEST]: newRequestListener,
       [REFETCH_CHATS]: refetchListener,
-      // [ONLINE_USERS]: onlineUsersListener,
+      [ONLINE_USERS]: onlineUsersListener,
     };
     useSocketEvents(socket, eventHandlers);
     return (
@@ -85,6 +91,7 @@ const AppLayout = () => (WrappedComponent) => {
         <DeleteChatMenu
           dispatch={dispatch}
           deleteMenuAnchor={deleteMenuAnchor}
+          chatId={chatId}
         />
         {isLoading ? (
           <Skeleton />
@@ -119,6 +126,7 @@ const AppLayout = () => (WrappedComponent) => {
                 chatId={chatId}
                 handleDeleteChat={handleDeleteChat}
                 newMessagesAlert={newMessagesAlert}
+                onlineUsers={onlineUsers}
               />
             )}
           </Grid>

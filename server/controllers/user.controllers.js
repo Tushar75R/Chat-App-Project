@@ -14,7 +14,6 @@ import { NEW_REQUEST, REFETCH_CHATS } from "../constants/event.js";
 import { getOtherMember } from "../lib/helper.js";
 
 const newUser = TryCatch(async (req, res, next) => {
-  console.log("here");
   const { name, username, password, bio } = req.body;
   const file = req.file;
   if (!file) return next(ErrorHandler("avatar is required", 404));

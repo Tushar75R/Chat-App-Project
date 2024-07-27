@@ -1,6 +1,6 @@
-import React from 'react'
-import {Stack} from '@mui/material'
-import ChatItem from '../Shared/ChatItem'
+import React from "react";
+import { Stack } from "@mui/material";
+import ChatItem from "../Shared/ChatItem";
 const ChatList = ({
   w = "100%",
   chats = [],
@@ -44,4 +44,4 @@ const ChatList = ({
   );
 };
 
-export default ChatList
+export default ChatList;
