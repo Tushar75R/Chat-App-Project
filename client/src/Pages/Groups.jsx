@@ -374,7 +374,7 @@ const GroupListItem = memo(({ group, chatId }) => {
   return (
     <Link
       backgroundColor={
-        _id.toString() === chatId.toString() ? "#808080" : "#D3D3D3"
+        _id?.toString() === chatId?.toString() ? "#808080" : "#D3D3D3"
       }
       to={`?group=${_id}`}
       onClick={(e) => {

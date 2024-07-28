@@ -22,37 +22,6 @@ import { server } from "../Constants/config";
 import Lottie from "lottie-react";
 import animationData from "../assets/Animation .json";
 import a1 from "../assets/A1.json";
-import { keyframes } from "@emotion/react";
-import styled from "@emotion/styled";
-
-const rotate = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-`;
-
-const RotatingText = styled.div`
-  position: absolute;
-  top: -30%;
-  left: 50%;
-  width: 200px;
-  height: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: translate(-50%, -50%);
-  animation: ${rotate} 10s linear infinite;
-  z-index: 1;
-
-  p {
-    font-size: 2rem;
-    font-weight: bold;
-    color: blue;
-  }
-`;
 
 function Login() {
   const [isLogin, setisLogin] = useState(true);
@@ -142,12 +111,13 @@ function Login() {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#D3D3D3",
+        padding: "4rem",
       }}
     >
       <Stack
         direction={"row"}
         position={"fixed"}
-        sx={{ marginTop: "-35rem", marginLeft: "-5rem", alignItems: "center" }}
+        sx={{ marginTop: "-35rem", alignItems: "center" }}
       >
         <Typography variant="h2" fontStyle={"italic"}>
           Connect-
@@ -156,27 +126,30 @@ function Login() {
         <Lottie
           animationData={a1}
           loop={true}
-          style={{ width: "6rem", height: "6rem" }}
+          style={{ width: "6rem", height: "6rem", zIndex: "1" }}
         />
       </Stack>
-      <div
-        style={{ width: "30rem", marginLeft: "10rem", position: "relative" }}
+      <Container
+        lg={6}
+        sx={{
+          display: { xs: "none", md: "none", lg: "block" },
+        }}
       >
-        <RotatingText>
-          <p>Connect-O</p>
-        </RotatingText>
-        <Lottie animationData={animationData} loop={true} />
-      </div>
-
+        <Lottie
+          animationData={animationData}
+          loop={true}
+          style={{ width: "40rem" }}
+        />
+      </Container>
       <Container
         component={"main"}
         maxWidth="xs"
         sx={{
-          height: "100vh",
+          height: "91vh",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          marginLeft: "25rem ",
+          zIndex: "2",
         }}
       >
         <Paper

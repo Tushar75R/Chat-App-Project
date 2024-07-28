@@ -204,6 +204,9 @@ function Chat({ chatId, user }) {
               position: "absolute",
               left: "1.5rem",
               rotate: "30deg",
+              marginTop: "0.5rem",
+              width: "1.5rem",
+              height: "1.5rem",
             }}
             onClick={handleFileOpen}
           >
@@ -220,7 +223,7 @@ function Chat({ chatId, user }) {
             type="submit"
             sx={{
               bgcolor: DarkGray,
-              color: "#95009A",
+              color: LightBlack,
               marginLeft: "1rem",
               padding: "0.5rem",
               "&:hover": {
