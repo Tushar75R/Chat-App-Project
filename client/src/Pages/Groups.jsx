@@ -26,7 +26,7 @@ import { LayoutLoader } from "../Components/Layout/Loaders";
 import AvatarCard from "../Components/Shared/AvatarCard";
 import UserItem from "../Components/Shared/UserItem";
 import { Link } from "../Components/Style/StyledComponent";
-import { matBlack, NavBarColor } from "../Constants/Color";
+import { Black, Gray } from "../Constants/Color";
 import { useAsyncMutation, useErrors } from "../Hooks/hooks";
 import {
   useChatDetailsQuery,
@@ -45,6 +45,7 @@ const AddMemberDialog = lazy(() =>
 );
 
 function Groups() {
+  const [color, setColor] = useState(false);
   const chatId = useSearchParams()[0].get("group");
   const navigation = useNavigate();
 
@@ -164,7 +165,7 @@ function Groups() {
             position: "absolute",
             top: "2rem",
             left: "2rem",
-            bgcolor: matBlack,
+            bgcolor: Black,
             color: "white",
             ":hover": {
               bgcolor: "rgba(0,0,0,0.7)",
@@ -351,7 +352,7 @@ function Groups() {
 const GroupList = ({ w = "100%", myGroups = [], chatId }) => (
   <Stack
     width={w}
-    sx={{ backgroundImage: NavBarColor, height: "100vh" }}
+    sx={{ backgroundColor: "#D3D3D3", height: "100vh" }}
     overflow={"auto"}
   >
     {myGroups.length > 0 ? (
@@ -372,6 +373,9 @@ const GroupListItem = memo(({ group, chatId }) => {
 
   return (
     <Link
+      backgroundColor={
+        _id.toString() === chatId.toString() ? "#808080" : "#D3D3D3"
+      }
       to={`?group=${_id}`}
       onClick={(e) => {
         if (_id === chatId) {

@@ -1,3 +1,5 @@
+import { useInputValidation } from "6pp";
+import { Search as SearchIcon } from "@mui/icons-material";
 import {
   Dialog,
   DialogTitle,
@@ -6,18 +8,15 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import { useInputValidation } from "6pp";
-import { Search as SearchIcon } from "@mui/icons-material";
-import UserItem from "../Shared/UserItem";
-import { sampleuser } from "../../Constants/Sample";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsSearch } from "../../redux/reducers/misc";
+import { useAsyncMutation } from "../../Hooks/hooks";
 import {
   useLazySearchUserQuery,
   useSendFriendRequestMutation,
 } from "../../redux/api/api";
-import { useAsyncMutation } from "../../Hooks/hooks";
+import { setIsSearch } from "../../redux/reducers/misc";
+import UserItem from "../Shared/UserItem";
 
 const Search = () => {
   const dispatch = useDispatch();

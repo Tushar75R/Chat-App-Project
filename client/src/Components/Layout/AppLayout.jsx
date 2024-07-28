@@ -114,8 +114,7 @@ const AppLayout = () => (WrappedComponent) => {
             height={"100%"}
             sx={{
               display: { xs: "none", sm: "block" },
-              backgroundImage:
-                " linear-gradient(163deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%)",
+              backgroundColor: "#E5E4E2",
             }}
           >
             {isLoading ? (
@@ -140,8 +139,7 @@ const AppLayout = () => (WrappedComponent) => {
             sx={{
               display: { xs: "none", md: "block" },
               padding: "2rem",
-              backgroundImage:
-                "linear-gradient(200deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%)",
+              backgroundColor: "#D3D3D3",
             }}
             height={"100%"}
           >

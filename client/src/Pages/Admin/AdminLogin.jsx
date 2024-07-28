@@ -35,8 +35,7 @@ const AdminLogin = () => {
   return (
     <div
       style={{
-        backgroundImage:
-          "linear-gradient(90deg, rgba(45,179,50,1) 1%, rgba(111,233,53,1) 15%, rgba(57,242,47,1) 25%, rgba(41,252,165,1) 34%, rgba(39,255,238,1) 58%)",
+        backgroundColor: "#D3D3D3",
       }}
     >
       <Container

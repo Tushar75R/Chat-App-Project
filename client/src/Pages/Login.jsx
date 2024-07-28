@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Avatar,
+  Box,
   Button,
   Container,
   IconButton,
@@ -13,11 +14,45 @@ import { CameraAlt as CameraAltIcon } from "@mui/icons-material";
 import { VisuallyHiddenInput } from "../Components/Style/StyledComponent";
 import { useFileHandler, useInputValidation } from "6pp";
 import { usernameValidator } from "../Utils/validator";
-import { useDispatch, useSelector } from "react-redux";
-import { userExists, userNotExists } from "../redux/reducers/auth";
+import { useDispatch } from "react-redux";
+import { userExists } from "../redux/reducers/auth";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { server } from "../Constants/config";
+import Lottie from "lottie-react";
+import animationData from "../assets/Animation .json";
+import a1 from "../assets/A1.json";
+import { keyframes } from "@emotion/react";
+import styled from "@emotion/styled";
+
+const rotate = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+const RotatingText = styled.div`
+  position: absolute;
+  top: -30%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  animation: ${rotate} 10s linear infinite;
+  z-index: 1;
+
+  p {
+    font-size: 2rem;
+    font-weight: bold;
+    color: blue;
+  }
+`;
 
 function Login() {
   const [isLogin, setisLogin] = useState(true);
@@ -31,6 +66,7 @@ function Login() {
   const bio = useInputValidation("");
   const avatar = useFileHandler("single");
   const dispatch = useDispatch();
+
   const handleLogin = async (e) => {
     e.preventDefault();
     const toastId = toast.loading("Logging In...");
@@ -61,10 +97,11 @@ function Login() {
       setIsLoading(false);
     }
   };
+
   const handleSignUp = async (e) => {
     e.preventDefault();
 
-    const toastId = toast.loading("Singing Up...");
+    const toastId = toast.loading("Signing Up...");
     setIsLoading(true);
     const formData = new FormData();
     formData.append("avatar", avatar.file);
@@ -97,13 +134,40 @@ function Login() {
       setIsLoading(false);
     }
   };
+
   return (
     <div
       style={{
-        backgroundImage:
-          "linear-gradient(90deg, rgba(45,179,50,1) 1%, rgba(111,233,53,1) 15%, rgba(57,242,47,1) 25%, rgba(41,252,165,1) 34%, rgba(39,255,238,1) 58%)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#D3D3D3",
       }}
     >
+      <Stack
+        direction={"row"}
+        position={"fixed"}
+        sx={{ marginTop: "-35rem", marginLeft: "-5rem", alignItems: "center" }}
+      >
+        <Typography variant="h2" fontStyle={"italic"}>
+          Connect-
+        </Typography>
+
+        <Lottie
+          animationData={a1}
+          loop={true}
+          style={{ width: "6rem", height: "6rem" }}
+        />
+      </Stack>
+      <div
+        style={{ width: "30rem", marginLeft: "10rem", position: "relative" }}
+      >
+        <RotatingText>
+          <p>Connect-O</p>
+        </RotatingText>
+        <Lottie animationData={animationData} loop={true} />
+      </div>
+
       <Container
         component={"main"}
         maxWidth="xs"
@@ -112,6 +176,7 @@ function Login() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          marginLeft: "25rem ",
         }}
       >
         <Paper

@@ -1,9 +1,9 @@
-import React from 'react'
-import {DataGrid, GridToolbar} from '@mui/x-data-grid'
-import { Paper, Typography,Container } from '@mui/material'
-import { matBlack } from '../../Constants/Color'
+import React from "react";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { Paper, Typography, Container } from "@mui/material";
+import { Black } from "../../Constants/Color";
 
-const Table = ({rows , columns, heading, rowHeight = 75}) => {
+const Table = ({ rows, columns, heading, rowHeight = 75 }) => {
   return (
     <Container
       sx={{
@@ -38,12 +38,12 @@ const Table = ({rows , columns, heading, rowHeight = 75}) => {
           rowHeight={rowHeight}
           style={{
             height: "80%",
-            fontSize:"1rem",
+            fontSize: "1rem",
           }}
           sx={{
             border: "none",
             ".table-header": {
-              bgcolor: matBlack,
+              bgcolor: Black,
               color: "white",
             },
           }}
@@ -52,6 +52,6 @@ const Table = ({rows , columns, heading, rowHeight = 75}) => {
       </Paper>
     </Container>
   );
-}
+};
 
-export default Table
+export default Table;

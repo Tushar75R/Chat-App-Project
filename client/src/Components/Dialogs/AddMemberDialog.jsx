@@ -7,9 +7,8 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { sampleuser } from "../../Constants/Sample";
-import UserItem from "../../Components/Shared/UserItem";
 import { useDispatch, useSelector } from "react-redux";
+import UserItem from "../../Components/Shared/UserItem";
 import { useAsyncMutation, useErrors } from "../../Hooks/hooks";
 import {
   useAddGroupMembersMutation,

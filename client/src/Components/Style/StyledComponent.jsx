@@ -16,8 +16,9 @@ export const Link = styled(LinkComponent)`
   text-decoration: none;
   color: black;
   padding: 1rem;
+  background-color: ${({ backgroundColor }) => backgroundColor || "inherit"};
   &:hover {
-    background-color: #add8e6;
+    background-color: #f8f8f8;
   }
 `;
 
@@ -37,7 +38,7 @@ export const SearchField = styled("input")`
   border: none;
   outline: none;
   border-radius: 1.5rem;
-  background-color: #E5E7E9};
+  background-color: #F8F8F8};
   font-size: 1.1rem;
 `;
 

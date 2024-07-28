@@ -15,6 +15,7 @@ import {
 } from "../../redux/api/api";
 import { setIsDeleteMenu } from "../../redux/reducers/misc";
 import { transformImage } from "../../Lib/features";
+import { DarkGray, Gray } from "../../Constants/Color";
 
 const DeleteChatMenu = ({ dispatch, deleteMenuAnchor, chatId }) => {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const DeleteChatMenu = ({ dispatch, deleteMenuAnchor, chatId }) => {
   const Members = (data) => {
     if (data) {
       return (
-        <Stack width="10vw" padding="1rem">
+        <Stack width="20rem " padding="1rem" spacing="1rem">
           {data.chat.members.map((i) => (
             <Stack
               direction={"row"}
@@ -72,7 +73,14 @@ const DeleteChatMenu = ({ dispatch, deleteMenuAnchor, chatId }) => {
               margin="0.5rem"
             >
               <Avatar src={transformImage(i.avatar, 100)} />
-              <Typography>{i.name}</Typography>
+              <Typography
+                flexGrow={"1"}
+                marginLeft={"2rem"}
+                borderBottom={"2px solid black"}
+                bgcolor={DarkGray}
+              >
+                {i.name}
+              </Typography>
             </Stack>
           ))}
         </Stack>

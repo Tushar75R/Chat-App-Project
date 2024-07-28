@@ -3,6 +3,7 @@ import { Link } from "../Style/StyledComponent";
 import { Box, Stack, Typography } from "@mui/material";
 import AvatarCard from "./AvatarCard";
 import { motion } from "framer-motion";
+import { LightBlack, White } from "../../Constants/Color";
 
 const ChatItem = ({
   avatar = [],
@@ -17,7 +18,12 @@ const ChatItem = ({
 }) => {
   return (
     <Link
-      sx={{ padding: "0" }}
+      sx={{
+        padding: "0",
+        "&:hover": {
+          bgcolor: "#899499",
+        },
+      }}
       to={`/chat/${_id}`}
       onContextMenu={(e) => handleDeleteChat(e, _id, groupChat)}
     >
@@ -30,9 +36,10 @@ const ChatItem = ({
           gap: "1rem",
           alignItems: "center",
           padding: "1rem",
-          backgroundColor: sameSender ? "#6082B6" : "unset",
-          color: sameSender ? "white" : "unset",
+          backgroundColor: sameSender ? LightBlack : "#E5E4E2",
+          color: sameSender ? "#E5E4E2" : LightBlack,
           position: "relative",
+          borderBottom: "0.1rem solid #36454F",
         }}
       >
         <AvatarCard avatar={avatar} />
@@ -49,7 +56,7 @@ const ChatItem = ({
               height: "10px",
               borderRadius: "50%",
               position: "absolute",
-              backgroundColor: "blue",
+              backgroundColor: "#6082B6",
               top: "50%",
               right: "1rem",
               transform: "translateY(-50%)",

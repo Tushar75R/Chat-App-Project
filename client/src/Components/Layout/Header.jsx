@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { Suspense, lazy, useState } from "react";
-import { blue } from "../../Constants/Color";
+import { LightBlack } from "../../Constants/Color";
 import {
   Add as AddIcon,
   Group as GroupIcon,
@@ -74,15 +74,18 @@ function Header() {
         <AppBar
           position="static"
           sx={{
-            bgcolor: blue,
+            bgcolor: LightBlack,
           }}
         >
           <Toolbar>
             <Typography
               variant="h6"
               sx={{ display: { xs: "none", sm: "block" }, cursor: "pointer" }}
+              onClick={() => {
+                navigate("/");
+              }}
             >
-              P-chat
+              Connect-O
             </Typography>
             <Box
               sx={{

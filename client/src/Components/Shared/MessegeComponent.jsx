@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { blue } from "../../Constants/Color";
+import { Gray, LightBlack } from "../../Constants/Color";
 import React, { memo } from "react";
 import moment from "moment";
 import { fileFormat } from "../../Lib/features";
@@ -19,16 +19,17 @@ const MessegeComponent = ({ message, user }) => {
         alignSelf: samesender ? "flex-end" : "flex-start",
         color: "black",
         width: "fit-content",
-        backgroundImage: "linear-gradient(0deg, #FFDEE9 0%, #B5FFFC 100%)",
+        backgroundColor: "#D3D3D3",
         borderRadius: "16px",
         padding: "10px",
       }}
     >
       {!samesender && (
         <Typography
-          bgcolor={blue}
-          color={"white"}
-          border={"1px black solid"}
+          sx={{
+            textDecoration: "underline",
+          }}
+          color={LightBlack}
           width={"inherit"}
           paddingLeft={"0.2rem"}
           paddingRight={"0.3rem"}
